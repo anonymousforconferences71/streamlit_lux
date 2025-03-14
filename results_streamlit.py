@@ -6,7 +6,7 @@ import plotly.express as px
 
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
-url="https://docs.google.com/spreadsheets/d/1pfKrg_XDlyP7TSSo1MWlTAgVDZ9Cwz6LXuNO7eHEhr0/edit?usp=sharing"
+url="https://docs.google.com/spreadsheets/d/11fHKXjQZrQwqG-OHlthb7smEGEJ0c96Dq5Lp9pX5Nxc/edit?usp=sharing"
 df = conn.read(spreadsheet=url)
 
 
