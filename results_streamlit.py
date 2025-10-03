@@ -140,7 +140,7 @@ st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neu
 with st.container(border =True):
 
 #Control panel for column/row selection
-col1, col2,col3,col4 = st.columns(4)
+    col1, col2,col3,col4 = st.columns(4)
 with col1:
     filter_open_closed=st.radio("Filter closed/open LLMs",["All","Open","Closed"])
 with col2:
@@ -170,4 +170,5 @@ col1, col2, col3, col4 = st.columns(4)
 
 # Print results.
 update_table()
+
 
