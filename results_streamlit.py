@@ -152,17 +152,6 @@ st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neu
 with st.container(border =True):
 
 #Control panel for column/row selection
-    col1, col2,col3,col4 = st.columns(4)
-with col1:
-    filter_open_closed=st.radio("Filter closed/open LLMs",["All","Open","Closed"])
-with col2:
-    filter_level=st.radio("Filter CEFR level",["All","A1","A2","B1","B2","C1","C2"])
-with col3:
-    filter_category=st.radio("Filter Test Category",["All","VOCAB","GRAMMAR","RC","LC","total"])
-with col4:
-    filter_family=st.selectbox("Select LLM Family:",["All",'Aya','Claude','Command-R','DeepSeek','Falcon','Gemini','Gemma','GLM','GPT','Llama','Mistral','Phi','Qwen','StableLM','WizardLM'])
-filter_size=st.slider("Select size range of LLM parameters:",value=[0,700])
-filter_performance=st.select_slider("Show LLMs with minimum performance of :",options=[e*.1 for e in range(0,11)])
 
 col1, col2, col3, col4 = st.columns(4)
 with col3:
@@ -182,6 +171,7 @@ st.markdown("</div>", unsafe_allow_html=True)  #
 
 # Print results.
 update_table()
+
 
 
 
