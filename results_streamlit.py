@@ -153,7 +153,7 @@ with st.container(border =True):
 
 #Control panel for column/row selection
 
-col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 with col3:
         filter_open_closed = st.radio("Filter closed/open LLMs", ["All", "Open", "Closed"])
         filter_family = st.selectbox("Select LLM Family:", ["All", 'Aya', 'Claude', 'Command-R', 'DeepSeek', 'Falcon', 'Gemini', 'Gemma', 'GLM', 'GPT', 'Llama', 'Mistral', 'Phi', 'Qwen', 'StableLM', 'WizardLM'])
@@ -171,6 +171,7 @@ st.markdown("</div>", unsafe_allow_html=True)  #
 
 # Print results.
 update_table()
+
 
 
 
