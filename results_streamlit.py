@@ -3,7 +3,10 @@ from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import plotly
 import plotly.express as px
+import os
 
+# Set page configuration to use the entire width
+st.set_page_config(page_title="Your App Title", layout="wide")
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
 url="https://docs.google.com/spreadsheets/d/11fHKXjQZrQwqG-OHlthb7smEGEJ0c96Dq5Lp9pX5Nxc/edit?usp=sharing"
@@ -119,6 +122,23 @@ def update_table():
         st.write("No data matches the selected filters.")
 
 
+st.markdown("<h1 style='text-align: center; color: #537992;font-family: 'Bebas Neue';'><b>HOW WELL DO LLMS UNDERSTAND LUXEMBOURGISH?</b></h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left;font-family: 'Arial';'>Large Language Models (LLMs) have reshaped the AI landscape in recent years. They are becoming omnipresent, being used by private users and companies alike. However, LLMs are developed mainly for widespread languages such as English, Spanish, or German, leaving languages such as Luxembourgish on the sidelines.  </p>", unsafe_allow_html=True)
+
+st.markdown("<p style='text-align: left;font-family: 'Arial';'>In this project, we aimed to test the linguistic capabilities of LLMs in Luxembourgish. In collaboration with the Institut National des Langues Luxembourg, we used language proficiency exams to evaluate the performance of 45 current-day LLMs.</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>HOW DOES IT WORK?</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left;font-family: 'Arial';'>Using official language exams crafted by experts at INLL, we systematically test LLMs by letting them solve each question and grade their overall performance. There are 630 multiple-choice questions in total, each belonging to one out of four broad categories (Vocabulary, Grammar, Reading Comprehension, Listening Comprehension) and a <a href='https://www.efset.org/cefr/'>CEFR level</a> (A1, A2, B1, B2, C1, C2).  The performance of the LLMs for each category and CEFR level is expressed as a percentage of correctyly answered questions.</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>HOW TO USE THIS LEADERBOARD?</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left;font-family: 'Arial';>Below, you find the control panel for filtering the leaderboard. You can select a desired CEFR level and category to filter the table accordingly. In addition, you can choose to display only open-source/closed-source models, select a specific language models family (e.g. only Llama models), select a specific size range of LLM parameters, or display models that correctly answered a given percentage of questions. To help with readability, the highest performing models are highlighted in green.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: left;font-family: 'Arial';>Underneath the table, you find a bar chart showing the performance of the LLMs for each category and CEFR level to help compare the performance of the LLMs.</p>", unsafe_allow_html=True)
+#Control panel for column/row selectionst.markdown("<p style='text-align: left;font-family: 'Arial';'Below, you find the controls for filtering the leaderboard. You can select a desired CEFR level and category to filter the table accordingly. In addition, you choose to display only open-source or closed-source models, or select a specific language models family (e.g. only Llama models). To help with readability, the highest performing models are highlighted in green.</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>LEADERBOARD</h2>", unsafe_allow_html=True)
+st.divider()
+#st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>CONTROL PANEL</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>Control Panel</h3>", unsafe_allow_html=True)
+
+with st.container(border =True):
+
 #Control panel for column/row selection
 col1, col2,col3,col4 = st.columns(4)
 with col1:
@@ -132,7 +152,22 @@ with col4:
 filter_size=st.slider("Select size range of LLM parameters:",value=[0,700])
 filter_performance=st.select_slider("Show LLMs with minimum performance of :",options=[e*.1 for e in range(0,11)])
 
+col1, col2, col3, col4 = st.columns(4)
+    with col3:
+        filter_open_closed = st.radio("Filter closed/open LLMs", ["All", "Open", "Closed"])
+        filter_family = st.selectbox("Select LLM Family:", ["All", 'Aya', 'Claude', 'Command-R', 'DeepSeek', 'Falcon', 'Gemini', 'Gemma', 'GLM', 'GPT', 'Llama', 'Mistral', 'Phi', 'Qwen', 'StableLM', 'WizardLM'])
+    with col1:
+        filter_level = st.radio("Filter CEFR level", ["All", "A1", "A2", "B1", "B2", "C1", "C2"])
+    with col2:
+        filter_category = st.radio("Filter Test Category", ["All", "VOCAB", "GRAMMAR", "RC", "LC", "total"],index = 5)
 
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        filter_size = st.slider("Select size range of LLM parameters:", value=[0, 700])
+        filter_performance = st.select_slider("Show LLMs with minimum performance of :", options=[e * 10 for e in range(0, 11)])
+
+    st.markdown("</div>", unsafe_allow_html=True)  #
 
 # Print results.
 update_table()
+
