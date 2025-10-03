@@ -42,7 +42,13 @@ def update_table():
     # Initialize selected columns with basic columns in specific order
     basic_columns = ['LLM', 'Size', 'Family', 'Closed_Open']
     selected_columns = set()  # Using a set to ensure uniqueness
+    numeric_cols = new_df.select_dtypes(include=['float64', 'int64']).columns.tolist()
+    numeric_cols.remove('Size')  # Exclude 'Size' from percentage conversion
+    for col in numeric_cols:
+        new_df[col] = (new_df[col] * 100).round(2)
     
+    new_df['Size'] = new_df['Size'].astype(int)    
+
     # Build the column selection pattern based on filters
     if filter_level != "All" and filter_category != "All":
         pattern = f"{filter_level}_{filter_category}"
@@ -62,7 +68,6 @@ def update_table():
     new_df = new_df[selected_columns]
     
     # Convert Size column to integer
-    new_df['Size'] = new_df['Size']
     
     if filter_family != "All":
         new_df = new_df[new_df["Family"] == filter_family]
@@ -76,9 +81,15 @@ def update_table():
     
     # Only apply styling if we have data
     if not new_df.empty:
-        styled_df = new_df.style.apply(highlight_top_3)
+        
+#        styled_df = new_df.style.format({col: "{:.2f}" for col in numeric_cols})  # Format for display
+        styled_df = new_df.style.apply(highlight_top_3).format({col: "{:.2f}" for col in numeric_cols})
+        st.divider()
+        st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>RESULTS</h3>", unsafe_allow_html=True)
+
         st.write(styled_df)
         
+
         # Create bar chart
         # Get numeric columns (excluding 'Size')
         numeric_cols = new_df.select_dtypes(include=['float64', 'int64']).columns.tolist()
@@ -86,8 +97,10 @@ def update_table():
             numeric_cols.remove('Size')
             
         if numeric_cols:  # Only create chart if we have numeric columns
-            st.subheader("Performance Visualization")
-            
+            #st.subheader("Performance Visualization")
+            st.divider()
+            st.markdown("<h3 style='text-align: left; color: #537992;font-family: 'Bebas Neue';'>PERFORMANCE VISUALISATION</h3>", unsafe_allow_html=True)
+
             # Create grouped bar chart using plotly
             
             chart_data = new_df.melt(
@@ -120,7 +133,6 @@ def update_table():
             st.plotly_chart(fig, use_container_width=True)
     else:
         st.write("No data matches the selected filters.")
-
 
 st.markdown("<h1 style='text-align: center; color: #537992;font-family: 'Bebas Neue';'><b>HOW WELL DO LLMS UNDERSTAND LUXEMBOURGISH?</b></h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: left;font-family: 'Arial';'>Large Language Models (LLMs) have reshaped the AI landscape in recent years. They are becoming omnipresent, being used by private users and companies alike. However, LLMs are developed mainly for widespread languages such as English, Spanish, or German, leaving languages such as Luxembourgish on the sidelines.  </p>", unsafe_allow_html=True)
@@ -170,6 +182,7 @@ st.markdown("</div>", unsafe_allow_html=True)  #
 
 # Print results.
 update_table()
+
 
 
 
